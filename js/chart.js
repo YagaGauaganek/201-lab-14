@@ -1,21 +1,55 @@
 'use strict';
 
 let canvasElem = document.getElementById('chart')
+// TODO:
 // Instantiate a new AppState
-//function renderChart() {
-//const AppState = new AppState();
-// Use a method on that AppState to load vote data from localStorage
-//appState.loadFrom
-//}
-/* TODO:
 
- * - Use a method on that AppState to load vote data from localStorage.
- * - Create a data object for chart.js using your AppState's allProducts array.
- * - Combine the data object with configuration information for chart.js type, colors, etc
- * - Call chart.js with the configuration and the canvasElem
- *
- */
+let chartData = new AppState();
+
+// Use a method on that AppState to load vote data from localStorage.
+
+chartData.loadItems();
+
+// Create a data object for chart.js using your AppState's allProducts array.
+// Combine the data object with configuration information for chart.js type, colors, etc
+// Call chart.js with the configuration and the canvasElem
+
 function renderChart() {
+    const productNames = [];
+    const productViews = [];
+    const productClicks = [];
+
+    for(let i = 0 ; i < chartData.allProduct.length; i++) {
+        productNames.push(chartData.allProducts[i].name);
+        productViews.push(chartData.allProducts[i].views);
+        productClicks.push(chartData.allProducts[i].clicks);
+    }
+    const data = {
+        labels: productNames,
+        datasets: [
+            {
+                label: "Views",
+                data: productViews,
+                backgroundColor: ["palevioletred"],
+                borderColor: ["orange"],
+                borderWidth: 1,
+            },
+            {
+                label: "Clicks",
+                data: productClicks,
+                backgroundColor: ["orange"],
+                borderColor: ["palevioletred"],
+                borderWidth: 1,
+            }
+        ]
+    };
+
+    const config = {
+        type: "bar",
+        data: data,
+    };
+    
+    const myChart = new Chart(canvasElem, config)
 }
 
 renderChart();
